@@ -1,0 +1,26 @@
+{
+  "name": "animetion",
+  "version": "1.0.0",
+  "description": "This is my Personal Hobby Project",
+  "main": "app.js",
+  "scripts": {
+    "dev": "nodemon --inspect",
+    "start": "node app.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "NODE",
+    "EXPRESS"
+  ],
+  "author": "Sokim Nam",
+  "license": "ISC",
+  "dependencies": {
+    "bcrypt": "^5.1.0",
+    "dotenv": "^16.0.3",
+    "express": "^4.18.2",
+    "jsonwebtoken": "^9.0.0",
+    "mongodb": "^4.16.0",
+    "mongoose": "^6.0.0",
+    "nodemon": "^2.0.22"
+  }
+}

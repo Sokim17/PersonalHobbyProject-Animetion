@@ -1,0 +1,27 @@
+<!-- Template Form -->
+<form #loginForm = "ngForm" (ngSubmit)="login()">
+    <div class="form-group">
+        <label for="username" class="form-label mt-3">Username: 
+            <input name="username" class="form-control" placeholder="Enter username" ngModel>
+        </label>&nbsp;
+        <label for="password" class="form-label mt-3">Password: 
+            <input name="password" class="form-control" placeholder="Enter password" ngModel>
+        </label> &nbsp;
+        <button type="submit" class="btn btn-success">Login</button> 
+      </div>
+    <div>
+        <!-- <label>Username <input name="username" placeholder="username" ngModel></label>&nbsp; &nbsp;
+        <label>Password <input name="password" placeholder="password" ngModel></label>&nbsp; &nbsp; -->
+    </div>
+</form>
+
+<!-- Reactive Form -->
+
+<!-- <h1>Login Page: </h1>
+<form [formGroup] = "loginForm" (ngSubmit)="login()">
+    <div>
+        <label>Username <input formControlName="username" placeholder="username"></label>&nbsp;
+        <label>Password <input formControlName="password" placeholder="password"></label>&nbsp;
+        <button type="submit">Login</button>
+    </div>
+</form> -->

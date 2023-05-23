@@ -1,0 +1,25 @@
+<div class="container">
+    <h3>Add New Movie Information</h3>
+    <form [formGroup]="addMovieForm" (ngSubmit)="addMovie()">
+        <div class="form-group">
+            <label for="title" class="form-label mt-4">Title:
+                <input type="text" class="form-control" formControlName="title" placeholder="Enter title" required>
+            </label> &nbsp; &nbsp;
+            <label for="genre" class="form-label mt-4">Genre:
+                <input type="text" class="form-control" formControlName="genre" placeholder="Enter genre" required>
+            </label> <br>
+            <label for="year" class="form-label mt-4">Year:
+                <input type="text" class="form-control" formControlName="year" placeholder="Enter year" required>
+            </label>&nbsp; &nbsp;
+            <label for="duration" class="form-label mt-4">Duration (mins):
+                <input type="text" class="form-control" formControlName="duration" placeholder="Enter duration"
+                    required>
+            </label>
+        </div>
+        <br>
+        <button type="submit" class="btn btn-success" [disabled]="!addMovieForm.valid">Add Movie</button> &nbsp;
+        <button type="submit" class="btn btn-success" routerLink="/movies">Cancel</button>
+
+        <!-- <span>Message:{{message}}</span> -->
+    </form>
+</div>

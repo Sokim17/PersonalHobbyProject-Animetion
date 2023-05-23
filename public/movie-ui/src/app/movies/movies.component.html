@@ -1,0 +1,24 @@
+<div class="container-fluid">
+    <h3>Movie Lists:</h3> <br>
+    <table class="table table-hover">
+        <thead>
+            <tr>
+                <th scope="col">No.</th>
+                <th scope="col">Title</th>
+                <th scope="col" style="text-align: justify;">Action</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr class="table-active" *ngFor="let movie of movies">
+                <td scope="row">Title:</td>
+                <td><a routerLink="/movies/{{movie._id}}">{{movie.title}}</a></td>
+                <td>
+                    <button class="btn btn-success" routerLink="/editmovie/{{movie._id}}">Edit</button>&nbsp;
+                    <button class="btn btn-success" (click)="deleteOneFromList(movie._id)">Delete</button> 
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <button class="btn btn-info" (click)="previous()" [disabled]="offset == 0">Previous</button> &nbsp;
+    <button class="btn btn-info" (click)="next()" [disabled]="movies.length<count">Next</button>
+</div>
