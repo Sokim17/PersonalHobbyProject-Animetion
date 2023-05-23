@@ -23,4 +23,5 @@ router.route("/:movieId/actors/:actorId")
     .delete(actorController.deleteActorByMovieId)
     .put(actorController.fullUpdateActor)
     .patch(actorController.partialUpdateActor);
+    
 module.exports = router;

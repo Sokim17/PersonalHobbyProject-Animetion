@@ -57,51 +57,7 @@ const _createNewMovie = function (req) {
     };
     return Movie.create(newMovie);
 }
-const _checkPaginationParams = function (req, res) {
 
-   
-
-
-
-    // if (req.query && req.query.lat && req.query.lng) {
-    //     _runGeoQuery(req, res);
-    //     return;
-    // }
-
-    // if (isNaN(offset)) {
-    //     res.status(process.env.HTTP_RESPONSE_NO).json({ message: process.env.QUERY_STRING_OFFSET_MESSAGE });
-    //     return;
-    // }
-    // if (isNaN(count)) {
-    //     res.status(process.env.HTTP_RESPONSE_NO).json({ message: process.env.QUERY_STRING_COUNT_MESSAGE });
-    //     return;
-    // }
-    
-    return new Promise((resolve, reject) => {
-        let offset = 0;
-        let count = 5;
-        
-        if (!req.query) {
-            reject();
-        } else {
-            if (req.query && req.query.offset) {
-                offset = parseInt(req.query.offset, 10);
-            }
-            if (req.query && req.query.count) {
-                count = parseInt(req.query.count, 10);
-            }
-            if (isNaN(offset)) {
-                res.status(process.env.HTTP_RESPONSE_NO).json({ message: process.env.QUERY_STRING_OFFSET_MESSAGE });
-                return;
-            }
-            if (isNaN(count)) {
-                res.status(process.env.HTTP_RESPONSE_NO).json({ message: process.env.QUERY_STRING_COUNT_MESSAGE });
-                return;
-            }
-            resolve({ offset, count });
-        }
-    })
-}
 const _runGeoQuery = function (req, res) {
     const lng = parseFloat(req.query.lng);
     const lat = parseFloat(req.query.lat);
@@ -134,6 +90,49 @@ const _runGeoQuery = function (req, res) {
 
     // });
 }
+const _checkPaginationParams = function (req, res) {
+
+    if (req.query && req.query.lat && req.query.lng) {
+        _runGeoQuery(req, res);
+        return;
+    }
+
+    // if (isNaN(offset)) {
+    //     res.status(process.env.HTTP_RESPONSE_NO).json({ message: process.env.QUERY_STRING_OFFSET_MESSAGE });
+    //     return;
+    // }
+    // if (isNaN(count)) {
+    //     res.status(process.env.HTTP_RESPONSE_NO).json({ message: process.env.QUERY_STRING_COUNT_MESSAGE });
+    //     return;
+    // }
+
+    return new Promise((resolve, reject) => {
+        let offset = 0;
+        let count = 5;
+
+        if (!req.query) {
+            reject();
+        } else {
+            if (req.query && req.query.offset) {
+                offset = parseInt(req.query.offset, 10);
+            }
+            if (req.query && req.query.count) {
+                count = parseInt(req.query.count, 10);
+            }
+            if (isNaN(offset)) {
+                res.status(process.env.HTTP_RESPONSE_NO).json({ message: process.env.QUERY_STRING_OFFSET_MESSAGE });
+                return;
+            }
+            if (isNaN(count)) {
+                res.status(process.env.HTTP_RESPONSE_NO).json({ message: process.env.QUERY_STRING_COUNT_MESSAGE });
+                return;
+            }
+            resolve({ offset, count });
+        }
+    })
+}
+
+
 const _findMovies = function (offset, count) {
     return Movie.find().skip(offset).limit(count);
 }
@@ -164,7 +163,7 @@ const getAllMovies = function (req, res) {
     // }
 
     _checkPaginationParams(req, res)
-        .then(({offset, count}) => _findMovies(offset, count))
+        .then(({ offset, count }) => _findMovies(offset, count))
         .then(movie => _checkMovie(response, movie))
         .then(movie => _setHttpOkResponse(response, movie))
         .catch(error => _setErrorResponse(error, response))
