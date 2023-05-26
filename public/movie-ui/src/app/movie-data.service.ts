@@ -7,8 +7,6 @@ import { environment } from 'src/environments/environment';
 import { Movie } from './movies/movies.component';
 import { AuthenticationService } from './authentication.service';
 
-
-
 @Injectable({
   providedIn: 'root'
 })
@@ -20,7 +18,7 @@ export class MovieDataService {
   baseUrl: string = environment.MOVIE_URL;
 
   public getMovies(offset: number, count: number): Observable<Movie[]> {
-    const url: string = this.baseUrl + "?offset=" + offset + "&count=" + count;
+    const url: string = this.baseUrl + environment.OFFSET + offset + environment.COUNT + count;
     return this.http.get<Movie[]>(url);
   }
 
@@ -31,9 +29,7 @@ export class MovieDataService {
 
   public deleteOneMovie(id: string): Observable<Movie> {
     const url: string = this.baseUrl + "/" + id;
-    const token:string = this._authentication.token;
-    console.log("Auth token", this._authentication.token);
-    return this.http.delete<Movie>(url, {headers: {authorization: "Bearer ", token}});
+    return this.http.delete<Movie>(url);
   }
 
   public deleteOneMovieFromList(id: string): Observable<Movie> {
@@ -50,11 +46,4 @@ export class MovieDataService {
     const url: string = this.baseUrl + "/" + id;
     return this.http.patch<Movie>(url, movie);
   }
-
-  public getMoviesByLocation(lng: number, lat: number) {
-    const url: string = this.baseUrl + "?lng=" + lng + "&lat=" + lat;
-    return this.http.get<Movie[]>(url);
-  }
-
-  
 }

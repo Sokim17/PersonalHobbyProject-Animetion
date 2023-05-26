@@ -63,7 +63,13 @@ export class RegisterComponent {
     this._userService.registerUser(_user).subscribe({
       next: () => this.OnRegisterSuccess(),
       error: (error) => this.OnRegisterError(error),
-      complete: () => { }
+      complete: () => { 
+        this.registrationForm = this._formBuilder.group({
+          name: "",
+          username: "",
+          password: ""
+        });
+      }
     });
   }
 

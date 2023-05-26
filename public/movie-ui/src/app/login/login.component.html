@@ -1,6 +1,6 @@
 
-<div *ngIf="isLogin()">Welcome
-    <button (click)="logout()">Logout</button>
+<div *ngIf="isLogin()">Welcome, <span style="font-style: italic; font-weight: bold; font-size: medium;">{{name}} </span> 
+    <button type="button" class="btn btn-primary" (click)="logout()">Logout</button>
 </div>
 
 <form *ngIf="!isLogin()" #loginForm="ngForm" (ngSubmit)="login()">

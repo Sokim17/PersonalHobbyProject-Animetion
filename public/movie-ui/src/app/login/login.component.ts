@@ -71,7 +71,9 @@ export class LoginComponent {
       complete: () => { }
     });
   }
-
+  get name(): string {
+    return this._authenticationService.name;
+  }
   OnLoginSuccess(token: Token) {
     this._authenticationService.token = token.token;
     this._router.navigate(["/profile"]);

@@ -26,7 +26,7 @@ export class MovieComponent {
   }
 
   deleteOne(id: string): void {
-    this._movieService.deleteOneMovie(this.movieId).subscribe((movie) => {
+    this._movieService.deleteOneMovie(id).subscribe((movie) => {
       this.routing.navigate(["movies"]);
     });
   }

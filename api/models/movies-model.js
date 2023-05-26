@@ -16,13 +16,6 @@ const movieSchema = mongoose.Schema({
         required: true
     },
     genre: [String],
-    location: {
-        address: String,
-        coordinates: {
-            type:[Number],
-            index: process.env.TWO_DSPHERE
-        }
-    },
     year: Number,
     duration: Number,
     actors: [actorSchema]

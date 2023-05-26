@@ -93,10 +93,7 @@ export class MoviesComponent implements OnInit {
 
   deleteOneFromList(id: string): void {
     this._movieService.deleteOneMovieFromList(id).subscribe(movie => {
-      this._movieService.getMovies(this.offset, this.count).subscribe(movies => {
-        // console.log(movies);
-        this.movies = movies;
-      });
+      this.getAllMovies();
     })
   }
 

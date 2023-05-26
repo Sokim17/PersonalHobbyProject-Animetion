@@ -41,6 +41,12 @@ export class AddMovieComponent {
         console.log("Movie Created", movie);
         this.message = "Movie Created";
         console.log(this.message);
+        this.addMovieForm = this._formBuilder.group({
+          title: "",
+          genre: "",
+          year: 0,
+          duration: 0
+        });
       }
     });
 

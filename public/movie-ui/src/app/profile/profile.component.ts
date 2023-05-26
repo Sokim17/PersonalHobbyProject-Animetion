@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { environment } from 'src/environments/environment';
+import { AuthenticationService } from '../authentication.service';
 
 @Component({
   selector: 'app-profile',
@@ -9,4 +10,10 @@ import { environment } from 'src/environments/environment';
 
 export class ProfileComponent {
   title:string = environment.PAGE_TITLE
+  constructor(private _authentication:AuthenticationService){}
+  
+  get name(): string {
+    return this._authentication.name;
+
+  }
 }

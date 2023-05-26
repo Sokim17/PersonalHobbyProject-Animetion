@@ -1,7 +1,6 @@
 import { AddMovieComponent } from "./add-movie/add-movie.component";
 import { EditMovieComponent } from "./edit-movie/edit-movie.component";
 import { ErrorpageComponent } from "./errorpage/errorpage.component";
-import { GeoSearchComponent } from "./geo-search/geo-search.component";
 import { HomeComponent } from "./home/home.component";
 import { MovieComponent } from "./movie/movie.component";
 import { MoviesComponent } from "./movies/movies.component";
@@ -32,10 +31,6 @@ export const Router = [
     {
         path: "editmovie/:movieId",
         component: EditMovieComponent
-    },
-    {
-        path: "search",
-        component: GeoSearchComponent
     },
     {
         path: "profile",

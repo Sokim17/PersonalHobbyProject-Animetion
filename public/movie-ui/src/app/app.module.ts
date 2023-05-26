@@ -3,6 +3,7 @@ import { BrowserModule } from '@angular/platform-browser';
 import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http'
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { RouterModule } from '@angular/router';
+import { JwtModule } from '@auth0/angular-jwt';
 
 import { AuthenticationInterceptor } from './authentication.interceptor';
 import { Router } from './app.routes';
@@ -19,7 +20,6 @@ import { RegisterComponent } from './register/register.component';
 import { LoginComponent } from './login/login.component';
 import { AddMovieComponent } from './add-movie/add-movie.component';
 import { EditMovieComponent } from './edit-movie/edit-movie.component';
-import { GeoSearchComponent } from './geo-search/geo-search.component';
 import { ProfileComponent } from './profile/profile.component';
 
 
@@ -37,7 +37,6 @@ import { ProfileComponent } from './profile/profile.component';
     LoginComponent,
     AddMovieComponent,
     EditMovieComponent,
-    GeoSearchComponent,
     ProfileComponent
   ],
   imports: [
@@ -45,7 +44,13 @@ import { ProfileComponent } from './profile/profile.component';
     RouterModule.forRoot(Router),
     HttpClientModule,
     ReactiveFormsModule,
-    FormsModule
+    FormsModule,
+    JwtModule.forRoot({
+      config: {
+        allowedDomains: [],
+        disallowedRoutes: [],
+      },
+    }),
   ],
   providers: [{
     provide: HTTP_INTERCEPTORS,
