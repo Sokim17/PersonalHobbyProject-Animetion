@@ -14,23 +14,23 @@ mongoose.connection.on(process.env.ERROR, function (error) {
     console.log(process.env.ERROR_MESSAGE, error);
 });
 
-// process.on(process.env.SIGINT, function () {
-//     mongoose.connection.close(function () {
-//         console.log(process.env.SIGINT_MESSAGE);
-//         process.exit(process.env.PROCESS_EXIT);
-//     });
-// });
+process.on(process.env.SIGINT, function () {
+    mongoose.connection.close(function () {
+        console.log(process.env.SIGINT_MESSAGE);
+        process.exit(process.env.PROCESS_EXIT);
+    });
+});
 
-// process.on(process.env.SIGTERM, function () {
-//     mongoose.connection.close(function () {
-//         console.log(process.env.SIGTERM_MESSAGE);
-//         process.exit(process.env.PROCESS_EXIT);
-//     });
-// });
+process.on(process.env.SIGTERM, function () {
+    mongoose.connection.close(function () {
+        console.log(process.env.SIGTERM_MESSAGE);
+        process.exit(process.env.PROCESS_EXIT);
+    });
+});
 
-// process.on(process.env.SIGUSR2, function () {
-//     mongoose.connection.on(function () {
-//         console.log(process.env.SIGUSR2_MESSAGE);
-//         process.kill(process.pid, process.env.SIGUSR2);
-//     })
-// });
+process.on(process.env.SIGUSR2, function () {
+    mongoose.connection.on(function () {
+        console.log(process.env.SIGUSR2_MESSAGE);
+        process.kill(process.pid, process.env.SIGUSR2);
+    })
+});

@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
-import { MovieDataService } from '../movie-data.service';
 import { ActivatedRoute } from '@angular/router';
+
+import { MovieDataService } from '../movie-data.service';
+import { AuthenticationService } from '../authentication.service';
 
 
 export class Actor {
@@ -76,7 +78,7 @@ export class MoviesComponent implements OnInit {
   count: number = 5;
 
   constructor(private _movieService: MovieDataService,
-     private _route: ActivatedRoute) {
+     private _route: ActivatedRoute, private _authenticationService:AuthenticationService) {
   }
 
   ngOnInit(): void {
@@ -92,7 +94,7 @@ export class MoviesComponent implements OnInit {
   deleteOneFromList(id: string): void {
     this._movieService.deleteOneMovieFromList(id).subscribe(movie => {
       this._movieService.getMovies(this.offset, this.count).subscribe(movies => {
-        console.log(movies);
+        // console.log(movies);
         this.movies = movies;
       });
     })
@@ -108,6 +110,10 @@ export class MoviesComponent implements OnInit {
       this.offset -= this.count;
     }
     this.getAllMovies();
+  }
+  
+  isLoggedIn(){
+    return this._authenticationService.isLoggedIn;
   }
 }
 

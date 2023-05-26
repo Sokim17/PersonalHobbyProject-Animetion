@@ -17,7 +17,7 @@ export class EditMovieComponent implements OnInit {
   movie!: Movie;
 
   constructor(private _formBuilder: FormBuilder, private _movieService: MovieDataService, private _route: ActivatedRoute,
-    private router:Router) {
+    private router: Router) {
     this.movie = new Movie("", [], 0, 0);
     this.editMovieForm = this._formBuilder.group({
       title: "",
@@ -29,7 +29,7 @@ export class EditMovieComponent implements OnInit {
 
   ngOnInit() {
     this.id = this._route.snapshot.params["movieId"];
-    
+
     this._movieService.getOneMovie(this.id).subscribe(movie => {
       this.movie = movie;
       this.editMovieForm.setValue({
@@ -53,7 +53,7 @@ export class EditMovieComponent implements OnInit {
       duration: this.movie.duration
     });
   }
-  
+
   message: string = "";
 
   editMovie() {
@@ -64,11 +64,12 @@ export class EditMovieComponent implements OnInit {
       duration: this.editMovieForm.value.duration
     };
 
-    this._movieService.editOneMovie(this.id, _movie).subscribe(movie => {
-        // console.log("Movie Updated", movie);
-        alert("Movie Updated")
-        this.router.navigate(["movies"]);
+    this._movieService.editOneMovie(this.id, _movie).subscribe({
+      next: (movie) => {
+        this.message = "Movie Updated";
+        console.log(this.message);
+        // this.router.navigate(["movies"]);
       }
-    );
+    });
   }
 }

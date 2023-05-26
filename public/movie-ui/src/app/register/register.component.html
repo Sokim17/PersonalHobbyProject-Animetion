@@ -1,5 +1,8 @@
 <div class="container-fluid">
     <h1>Register New User:</h1>
+
+    <div *ngIf="isSuccess" style="background-color:deepskyblue;">{{successMessage}}</div>
+    <div *ngIf="isError" style="background-color:blueviolet">{{errorMessage}}</div>
     <form [formGroup]="registrationForm" (ngSubmit)="register()"> 
         <div class="form-group">
             <label for="name" class="form-label mt-4">Name:
@@ -12,22 +15,6 @@
                 <input type="text" class="form-control" formControlName="password" placeholder="Enter password" required>
             </label>&nbsp; &nbsp;
         </div>
-        <!-- <div>
-            <label>Name: <input type="text" formControlName="name" placeholder="Your Name"></label>
-        </div>
-        <br>
-        <div>
-            <label>Username: <input type="text" formControlName="username" placeholder="username"></label>
-        </div>
-        <br>
-        <div>
-            <label>Password: <input type="password" formControlName="password" placeholder="password"></label>
-        </div>
-        <br>
-        <div>
-            <label>Repeat Password: <input type="password" fromControlName="repeatPassword"
-                    placeholder="repeat password"></label>
-        </div> -->
         <br>
         <button type="submit" class="btn btn-success">Register</button>
     </form>

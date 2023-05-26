@@ -5,7 +5,7 @@ const Movie = mongoose.model(process.env.DB_MOVIE_MODEL);
 
 const response = {
     status: parseInt(process.env.HTTP_RESPONSE_OK),
-    message: "201"
+    message: process.env.HTTP_RESPONSE_OK_MESSAGE
 }
 
 const _sendResponse = function (res, response) {
@@ -93,10 +93,6 @@ const _removeSpecificActor = function (movie, req) {
     return movie.save();
 }
 
-const _saveMovie = function (movie) {
-    return movie.save();
-}
-
 const _setErrorResponse = function (err, response) {
     if (err.status) {
         response = err;
@@ -157,26 +153,6 @@ const deleteActorByMovieId = function (req, res) {
         .then(movie => _setHttpOkResponse(response, movie.actors))
         .catch(error => _setErrorResponse(error, response))
         .finally(() => _sendResponse(res, response));
-}
-
-const _updateOne = function (req, res, updateActorCallBack) {
-
-    const movieId = req.params.movieId;
-    const actorId = req.params.actorId;
-
-    _findById(movieId).then(movie => {
-        if (!movie) {
-            res.status(process.env.HTTP_RESPONSE_NOT_FOUND).json({ message: "Movie Not Found!" });
-            return;
-        }
-        const actor = movie.actors.id(actorId);
-
-        if (!actor) {
-            res.status(process.env.HTTP_RESPONSE_NOT_FOUND).json({ message: "Actor Not Found!" });
-        } else {
-            updateActorCallBack(req, res, movie);
-        }
-    });
 }
 
 const _actorFullUpdate = function (req, movie) {

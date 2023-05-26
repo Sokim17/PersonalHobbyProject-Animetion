@@ -1,11 +1,14 @@
-const mongoose = require("mongoose");
 require("dotenv").config();
-const User = mongoose.model(process.env.DB_USER_MODEL);
+const mongoose = require("mongoose");
 const bcrypt = require("bcrypt");
+const utils = require("util");
+const jwt = require("jsonwebtoken");
+const User = mongoose.model(process.env.DB_USER_MODEL);
+
 
 const response = {
     status: parseInt(process.env.HTTP_RESPONSE_OK),
-    message: ""
+    message: process.env.HTTP_RESPONSE_OK_MESSAGE
 };
 
 const _sendResponse = function (res, response) {
@@ -41,13 +44,14 @@ const _createUser = function (req, passwordHash) {
 }
 
 const _setSuccessUser = function (response, addNewUser) {
-    response.status = 201;
+    response.status = parseInt(process.env.HTTP_RESPONSE_OK);
     response.message = addNewUser;
 };
 
 const addOne = function (req, res) {
     if (req.body) {
-        const saltRound = process.env.SALT_ROUND;
+        console.log(req.body);
+        const saltRound = parseInt(process.env.SALT_ROUND);
         bcrypt.genSalt(saltRound)
             .then((salt) => _generateHash(req.body.password, salt))
             .then((passwordHash) => _createUser(req, passwordHash))
@@ -57,89 +61,69 @@ const addOne = function (req, res) {
     }
 }
 
-const _checkUserExists = function (user) {
+
+const _checkUserExists = function (response, user) {
+    console.log("check user exist");
     return new Promise((resolve, reject) => {
         if (!user) {
             _setNotFoundResponse(user);
-            reject(user);
+            reject();
         } else {
+            response.user = user;
             resolve(user);
         }
     });
 }
-// const _createResponse = function (status = 201, message = "success") {
-//     return status
-// }
-const _setSuccessLogin = function (response, message = "success") {
-    response.status = 201;
+
+const _setSuccessLogin = function (response, message = process.env.HTTP_RESPONSE_OK_MESSAGE) {
+    response.status = parseInt(process.env.HTTP_RESPONSE_OK);
     response.message = message;
 }
-const _checkPassword = function (password, encryptedPassword) {
-    return bcrypt.compare(password, encryptedPassword);
+
+const _checkPassword = function (password, user) {
+    console.log("password", password);
+    console.log("Encrypt password", user.password);
+
+    return new Promise((resolve, reject) => {
+        bcrypt.compare(password, user.password)
+        .then((isMatch)=> resolve({isMatch, user}))
+        .catch((error) => reject(error));
+    })
 }
-const _checkPasswordMatch = function (isPasswordMatch) {
+
+const _checkPasswordMatch = function (isPasswordMatch, user) {
+    console.log("is match", isPasswordMatch);
     return new Promise((resolve, reject) => {
         if (isPasswordMatch) {
-            resolve("password correct");
+            resolve(user);
         } else {
-            reject("password incorrect");
+            reject(process.env.REJECT_PASSWORD_INCORRECT);
         }
     });
 }
-const _response = {
-    status: 201,
-    message: "Found"
-}
-const _generateToken = function(){
 
+const _generateToken = function (user) { //user
+    console.log("generate token");
+    const signature = utils.promisify(jwt.sign);
+    return signature({ name: user.name }, process.env.SECRET_KEY, { expiresIn: 3600 });
+}
+
+const _setTokenInResponse = function (token, response) {
+    response.status = parseInt(process.env.HTTP_RESPONSE_OK);
+    response.message = { "token" : token };
 }
 
 const getOne = function (req, res) {
-   console.log("username",req.body.username);
-   console.log("password",req.body.password);
-    // console.log("Login")
+    console.log("Login get one");
     if (req.body && req.body.username && req.body.password) {
         User.findOne({ username: req.body.username })
-            .then((user) => {
-                if (err) {
-                    _response.status = 500;
-                    _response.message = "Internal Error";
-                }
-                else if (!user) {
-                    _response.status = 404;
-                    _response.message = "Username Not Found";
-                    return;
-                }
-                bcrypt.compare(req.body.password, user.password)
-                    .then((isPasswordMatch) => {
-                        if (isPasswordMatch) {
-                            _response.status = 200;
-                            _response.message = "Password Match";
-                        } else {
-                            _response.status = 500;
-                            _response.message = "Wrong Password";
-                        }
-                    })
-                    .catch((error) => {
-                        _response.status = 501;
-                        _response.message = error;
-                    })
-            })
-            .catch((error) => {
-                _response.status = 501;
-                _response.message = error;
-            }).finally(() => {
-                res.status(_response.status).json(_response.message);
-            });
-
-
-        // User.findOne({ username : req.body.username })
-        //     .then((user) => _checkUserExists(user))
-        //     .then((user) => _checkPassword(req.body.password, user.password))
-        //     .then((isPasswordMatch) => _checkPasswordMatch(isPasswordMatch))
-        //     .then(() => _setSuccessLogin(response, "success"))
-        //     .catch((error) => _setInternalErrorResponse(response, error))
-        //     .finally(() => _sendResponse(res, response));
+            .then((user) => _checkUserExists(response, user))
+            .then((user) => _checkPassword(req.body.password, user))
+            .then(({ isMatch, user }) => _checkPasswordMatch(isMatch, user))
+            .then((user) => _generateToken(user))
+            .then((token) => _setTokenInResponse(token, response))
+            .catch((error) => _setInternalErrorResponse(response, error))
+            .finally(() => _sendResponse(res, response));
     }
 }
 

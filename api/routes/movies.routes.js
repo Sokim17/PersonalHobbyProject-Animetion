@@ -3,6 +3,7 @@ const router = express.Router();
 
 const movieController = require("../controllers/movieController");
 const actorController = require("../controllers/actorControllers");
+const authenticationController = require("../controllers/authenticationControllers");
 
 router.route("/")
     .get(movieController.getAllMovies)
@@ -10,7 +11,7 @@ router.route("/")
 
 router.route("/:movieId")
     .get(movieController.getOneMovieById)
-    .delete(movieController.deleteMovieById)
+    .delete(authenticationController.authentication, movieController.deleteMovieById)
     .put(movieController.fullUpdateMovie)
     .patch(movieController.updateMoviePartially);
 

@@ -1,3 +1,4 @@
+require("dotenv").config();
 const mongoose = require("mongoose");
 
 const actorSchema = mongoose.Schema({
@@ -19,7 +20,7 @@ const movieSchema = mongoose.Schema({
         address: String,
         coordinates: {
             type:[Number],
-            index: "2dsphere"
+            index: process.env.TWO_DSPHERE
         }
     },
     year: Number,

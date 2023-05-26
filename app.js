@@ -1,7 +1,7 @@
 require("./api/data/db");
+require("dotenv").config();
 const express = require("express");
 const path = require("path");
-require("dotenv").config();
 const app = express();
 const routes = require('./api/routes');
 
@@ -10,8 +10,8 @@ app.use(express.urlencoded({ extended: true }));
 
 app.use("/api", function (req, res, next) {
     res.header("Access-Control-Allow-Origin", "http://localhost:4200");
-    res.header('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept');
-    res.header('Access-Control-Allow-Methods',"GET,DELETE,PATCH,POST,PUT");
+    res.header('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept, authorization');
+    res.header('Access-Control-Allow-Methods', "GET,DELETE,PATCH,POST,PUT");
     next();
 });
 

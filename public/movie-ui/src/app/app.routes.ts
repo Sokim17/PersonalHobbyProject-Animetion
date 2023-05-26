@@ -5,6 +5,7 @@ import { GeoSearchComponent } from "./geo-search/geo-search.component";
 import { HomeComponent } from "./home/home.component";
 import { MovieComponent } from "./movie/movie.component";
 import { MoviesComponent } from "./movies/movies.component";
+import { ProfileComponent } from "./profile/profile.component";
 import { RegisterComponent } from "./register/register.component";
 
 export const Router = [
@@ -35,6 +36,10 @@ export const Router = [
     {
         path: "search",
         component: GeoSearchComponent
+    },
+    {
+        path: "profile",
+        component: ProfileComponent
     },
     {
         path: "**",

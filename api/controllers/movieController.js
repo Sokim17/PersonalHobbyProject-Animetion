@@ -9,12 +9,12 @@ const _findById = function (id) {
 const _findByIdAndDelete = function (id) {
     return Movie.findByIdAndDelete(id);
 }
-const _findQuery = function (query) {
-    return Movie.find(query);
-}
+// const _findQuery = function (query) {
+//     return Movie.find(query);
+// }
 const response = {
     status: parseInt(process.env.HTTP_RESPONSE_OK),
-    message: ""
+    message: process.env.HTTP_RESPONSE_OK_MESSAGE
 }
 const _sendResponse = function (res, response) {
     res.status(parseInt(response.status)).json(response.message);
@@ -27,6 +27,7 @@ const _setHttpOkResponse = function (response, object) {
     response.status = parseInt(process.env.HTTP_RESPONSE_OK);
     response.message = object;
 }
+
 const _setErrorResponse = function (err, response) {
     if (err.status) {
         response = err;
@@ -34,6 +35,7 @@ const _setErrorResponse = function (err, response) {
         _setInternalErrorResponse(response, err);
     }
 }
+
 const _checkMovie = function (response, movie) {
     return new Promise((resolve, reject) => {
         if (!movie) {
@@ -58,26 +60,26 @@ const _createNewMovie = function (req) {
     return Movie.create(newMovie);
 }
 
-const _runGeoQuery = function (req, res) {
-    const lng = parseFloat(req.query.lng);
-    const lat = parseFloat(req.query.lat);
+// const _runGeoQuery = function (req, res) {
+//     const lng = parseFloat(req.query.lng);
+//     const lat = parseFloat(req.query.lat);
 
-    const point = { type: "Point", coordinates: [lng, lat] };
-    const query = {
-        "location.coordinates": {
-            $near: {
-                $geometry: point,
-                $maxDistance: parseFloat(process.env.GEO_SEARCH_MAX_DIST, 10),
-                $minDistance: parseFloat(process.env.GEO_SEARCH_MIN_DIST, 10)
-            }
-        }
-    };
+//     const point = { type: "Point", coordinates: [lng, lat] };
+//     const query = {
+//         "location.coordinates": {
+//             $near: {
+//                 $geometry: point,
+//                 $maxDistance: parseFloat(process.env.GEO_SEARCH_MAX_DIST, 10),
+//                 $minDistance: parseFloat(process.env.GEO_SEARCH_MIN_DIST, 10)
+//             }
+//         }
+//     };
 
-    _findQuery(query).limit(parseFloat(process.env.DEFAULT_FIND_COUNT, 10))
-        .then(movie => _checkMovie(response, movie))
-        .then(movie => _setHttpOkResponse(response, movie))
-        .catch(error => _setErrorResponse(error, response))
-        .finally(() => _sendResponse(res, response));
+//     _findQuery(query).limit(parseFloat(process.env.DEFAULT_FIND_COUNT, 10))
+//         .then(movie => _checkMovie(response, movie))
+//         .then(movie => _setHttpOkResponse(response, movie))
+//         .catch(error => _setErrorResponse(error, response))
+//         .finally(() => _sendResponse(res, response));
 
     // .then(movies => {
     //     if (!movies) {
@@ -89,20 +91,11 @@ const _runGeoQuery = function (req, res) {
     //     res.status(process.env.HTTP_RESPONSE_INTERNAL_SERVER_ERROR).json(err);
 
     // });
-}
+// }
 const _checkPaginationParams = function (req, res) {
 
-    if (req.query && req.query.lat && req.query.lng) {
-        _runGeoQuery(req, res);
-        return;
-    }
-
-    // if (isNaN(offset)) {
-    //     res.status(process.env.HTTP_RESPONSE_NO).json({ message: process.env.QUERY_STRING_OFFSET_MESSAGE });
-    //     return;
-    // }
-    // if (isNaN(count)) {
-    //     res.status(process.env.HTTP_RESPONSE_NO).json({ message: process.env.QUERY_STRING_COUNT_MESSAGE });
+    // if (req.query && req.query.lat && req.query.lng) {
+    //     _runGeoQuery(req, res);
     //     return;
     // }
 
@@ -132,36 +125,10 @@ const _checkPaginationParams = function (req, res) {
     })
 }
 
-
 const _findMovies = function (offset, count) {
     return Movie.find().skip(offset).limit(count);
 }
 const getAllMovies = function (req, res) {
-    // let offset = 0;
-    // let count = 5;
-
-    // if (req.query && req.query.offset) {
-    //     offset = parseInt(req.query.offset, 10);
-    // }
-
-    // if (req.query && req.query.count) {
-    //     count = parseInt(req.query.count, 10);
-    // }
-
-    // if (req.query && req.query.lat && req.query.lng) {
-    //     _runGeoQuery(req, res);
-    //     return;
-    // }
-
-    // if (isNaN(offset)) {
-    //     res.status(process.env.HTTP_RESPONSE_NO).json({ message: process.env.QUERY_STRING_OFFSET_MESSAGE });
-    //     return;
-    // }
-    // if (isNaN(count)) {
-    //     res.status(process.env.HTTP_RESPONSE_NO).json({ message: process.env.QUERY_STRING_COUNT_MESSAGE });
-    //     return;
-    // }
-
     _checkPaginationParams(req, res)
         .then(({ offset, count }) => _findMovies(offset, count))
         .then(movie => _checkMovie(response, movie))

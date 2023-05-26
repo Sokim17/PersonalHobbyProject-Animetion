@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { Movie } from '../movies/movies.component';
 import { MovieDataService } from '../movie-data.service';
 import { ActivatedRoute, Router } from '@angular/router';
+import { AuthenticationService } from '../authentication.service';
 
 @Component({
   selector: 'app-movie',
@@ -12,7 +13,7 @@ export class MovieComponent {
   movie!: Movie;
 
   constructor(private _movieService: MovieDataService, private _route: ActivatedRoute,
-    private routing: Router) {
+    private routing: Router, private _authenticationService:AuthenticationService) {
     this.movie = new Movie("", [], 0, 0);
   }
   
@@ -28,5 +29,8 @@ export class MovieComponent {
     this._movieService.deleteOneMovie(this.movieId).subscribe((movie) => {
       this.routing.navigate(["movies"]);
     });
+  }
+  isLoggedIn(){
+    return this._authenticationService.isLoggedIn;
   }
 }

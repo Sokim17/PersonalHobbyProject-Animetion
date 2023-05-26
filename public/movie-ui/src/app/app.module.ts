@@ -1,23 +1,27 @@
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
-import { Router } from './app.routes';
-import { HttpClientModule } from '@angular/common/http'
+import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http'
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { RouterModule } from '@angular/router';
+
+import { AuthenticationInterceptor } from './authentication.interceptor';
+import { Router } from './app.routes';
 
 import { AppComponent } from './app.component';
 import { HeaderComponent } from './header/header.component';
 import { NavigatorComponent } from './navigator/navigator.component';
 import { FooterComponent } from './footer/footer.component';
 import { HomeComponent } from './home/home.component';
-import { RouterModule } from '@angular/router';
 import { ErrorpageComponent } from './errorpage/errorpage.component';
-import {MoviesComponent} from './movies/movies.component';
+import { MoviesComponent } from './movies/movies.component';
 import { MovieComponent } from './movie/movie.component';
 import { RegisterComponent } from './register/register.component';
 import { LoginComponent } from './login/login.component';
 import { AddMovieComponent } from './add-movie/add-movie.component';
 import { EditMovieComponent } from './edit-movie/edit-movie.component';
 import { GeoSearchComponent } from './geo-search/geo-search.component';
+import { ProfileComponent } from './profile/profile.component';
+
 
 @NgModule({
   declarations: [
@@ -33,7 +37,8 @@ import { GeoSearchComponent } from './geo-search/geo-search.component';
     LoginComponent,
     AddMovieComponent,
     EditMovieComponent,
-    GeoSearchComponent
+    GeoSearchComponent,
+    ProfileComponent
   ],
   imports: [
     BrowserModule,
@@ -42,7 +47,11 @@ import { GeoSearchComponent } from './geo-search/geo-search.component';
     ReactiveFormsModule,
     FormsModule
   ],
-  providers: [],
+  providers: [{
+    provide: HTTP_INTERCEPTORS,
+    useClass: AuthenticationInterceptor,
+    multi: true
+  }],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

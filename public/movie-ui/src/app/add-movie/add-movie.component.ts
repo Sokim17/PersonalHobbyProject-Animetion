@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { Movie } from '../movies/movies.component';
 import { MovieDataService } from '../movie-data.service';
+import { ActivatedRoute } from '@angular/router';
 
 
 @Component({
@@ -35,16 +36,13 @@ export class AddMovieComponent {
       duration: this.addMovieForm.value.duration
     };
 
-    this._movieService.addOneMovie(_movie).subscribe( movie=>{
-      
-      // next:(movie) => {
-      // console.log("Movie Created", movie);
-      // this.message = "Movie Created";
-      // console.log(this.message);
-      // }
-      alert("Movie created");
-    }
-    );
+    this._movieService.addOneMovie(_movie).subscribe({
+      next: (movie) => {
+        console.log("Movie Created", movie);
+        this.message = "Movie Created";
+        console.log(this.message);
+      }
+    });
 
   }
 

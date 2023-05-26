@@ -21,12 +21,12 @@
                     <li *ngFor="let actor of movie.actors">{{actor.name}}</li>
                 </td>
                 <td>
-                    <li *ngFor="let actor of movie.actors">Age: {{actor.age}},  awards: {{actor.awards}}</li>
+                    <li *ngFor="let actor of movie.actors"> Awards: {{actor.awards}}</li>
                 </td>
             </tr>
         </tbody>
     </table>
-    <button type="submit" class="btn btn-success" (click)="deleteOne(movie._id)">Delete</button> &nbsp;
+    <button *ngIf="isLoggedIn()" type="submit" class="btn btn-success" (click)="deleteOne(movie._id)">Delete</button> &nbsp;
     <button type="submit" class="btn btn-success" routerLink="/movies">Cancel</button>
 
 </div>
