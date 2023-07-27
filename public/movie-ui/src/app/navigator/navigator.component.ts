@@ -12,16 +12,6 @@ import { AuthenticationService } from '../authentication.service';
 export class NavigatorComponent {
 
   constructor(private _router:Router, private _authenticationService: AuthenticationService){}
-
-  // goHome(){
-  //   this._router.navigate([""])
-  // }
-  // goToMovies(){
-  //   this._router.navigate(["movies"])
-  // }
-  // goToRegister(){
-  //   this._router.navigate(["register"])
-  // }
   isLoggedIn(){
     return this._authenticationService.isLoggedIn;
   }

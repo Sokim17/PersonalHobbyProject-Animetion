@@ -26,7 +26,7 @@ export class User {
     this.#password = password;
   }
   toJSON(): any {
-    const user_json = '{"name":"' + this.name + '","username":"' + this.username + '","password":"' + this.password + '"}'
+    const user_json = environment.NAME_TOJSON_REGISTER + this.name + environment.USERNAME_TOJSON_REGISTER + this.username + environment.PASSWORD_TOJSON_REGISTER + this.password + environment.CLOSE_TOJSON_REGISTER
     return JSON.parse(user_json);
   }
 }
@@ -47,7 +47,6 @@ export class RegisterComponent {
   registrationForm!: FormGroup;
 
   constructor(private _formBuilder: FormBuilder, private _userService: UserDataService) {
-    // this.user = new User("", "", "");
   }
 
   ngOnInit() {

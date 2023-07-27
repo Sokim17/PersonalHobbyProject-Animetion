@@ -41,6 +41,21 @@ const _setSuccessUser = function (response, addNewUser) {
     response.status = parseInt(process.env.HTTP_RESPONSE_OK);
     response.message = addNewUser;
 };
+
+
+const addOne = function (req, res) {
+    if (req.body) {
+        console.log(req.body);
+        const saltRound = parseInt(process.env.SALT_ROUND);
+        bcrypt.genSalt(saltRound)
+            .then((salt) => _generateHash(req.body.password, salt))
+            .then((passwordHash) => _createUser(req, passwordHash))
+            .then((addNewUser) => _setSuccessUser(response.status, addNewUser))
+            .catch((error) => _setInternalErrorResponse(response, error))
+            .finally(() => _sendResponse(res, response));
+    }
+}
+
 //Get One
 const _checkUserExists = function (response, user) {
     return new Promise((resolve, reject) => {
@@ -80,19 +95,6 @@ const _generateToken = function (user) {
 const _setTokenInResponse = function (token, response) {
     response.status = parseInt(process.env.HTTP_RESPONSE_OK);
     response.message = { "token" : token };
-}
-
-const addOne = function (req, res) {
-    if (req.body) {
-        console.log(req.body);
-        const saltRound = parseInt(process.env.SALT_ROUND);
-        bcrypt.genSalt(saltRound)
-            .then((salt) => _generateHash(req.body.password, salt))
-            .then((passwordHash) => _createUser(req, passwordHash))
-            .then((addNewUser) => _setSuccessUser(response.status, addNewUser))
-            .catch((error) => _setInternalErrorResponse(response, error))
-            .finally(() => _sendResponse(res, response));
-    }
 }
 
 const getOne = function (req, res) {

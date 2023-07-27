@@ -27,7 +27,6 @@ export class Movie {
   #genre!: string[];
   #year!: number;
   #duration!: number;
-  #location!: string[];
   #actors!: Actor[];
 
   get _id(): string {
@@ -48,9 +47,6 @@ export class Movie {
   get duration(): number {
     return this.#duration;
   }
-  get location(): string[] {
-    return this.#location;
-  }
   get actors(): Actor[] {
     return this.#actors;
   }
@@ -60,7 +56,6 @@ export class Movie {
     this.#genre = genre;
     this.#year = year;
     this.#duration = duration;
-    // this.#location = location;
   }
 }
 

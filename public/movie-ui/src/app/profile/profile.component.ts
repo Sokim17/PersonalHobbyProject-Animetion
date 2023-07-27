@@ -14,6 +14,5 @@ export class ProfileComponent {
   
   get name(): string {
     return this._authentication.name;
-
   }
 }

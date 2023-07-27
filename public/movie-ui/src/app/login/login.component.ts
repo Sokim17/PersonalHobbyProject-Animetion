@@ -4,6 +4,7 @@ import { Router } from '@angular/router';
 
 import { UserDataService } from '../user-data.service';
 import { AuthenticationService } from '../authentication.service';
+import { environment } from 'src/environments/environment';
 
 export class Token {
   #token!: string;
@@ -17,6 +18,7 @@ export class Token {
     this.#token = token;
   }
 }
+
 export class Credentials {
   #username!: string;
   #password!: string;
@@ -33,8 +35,7 @@ export class Credentials {
   }
 
   toJSON(): any {
-    const user_json = '{"username":"' + this.username + '","password":"' + this.password + '"}'
-    console.log(user_json);
+    const user_json = environment.USERNAME_TOJSON_LOGIN + this.username + environment.PASSWORD_TOJSON_LOGIN + this.password + environment.CLOSE_TOJSON_LOGIN
     return JSON.parse(user_json);
   }
 }
@@ -71,9 +72,11 @@ export class LoginComponent {
       complete: () => { }
     });
   }
+  
   get name(): string {
     return this._authenticationService.name;
   }
+
   OnLoginSuccess(token: Token) {
     this._authenticationService.token = token.token;
     this._router.navigate(["/profile"]);
