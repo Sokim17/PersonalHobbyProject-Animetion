@@ -8,5 +8,5 @@ import { Component } from '@angular/core';
 export class FooterComponent {
   year = new Date();
   name:string = "Sokim NAM";
-  copyright:string = "Maharishi International University. All Rights Reserved.";
+  copyright:string = "All Rights Reserved.";
 }

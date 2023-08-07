@@ -9,6 +9,7 @@ import { AuthenticationService } from '../authentication.service';
   templateUrl: './movie.component.html',
   styleUrls: ['./movie.component.css']
 })
+
 export class MovieComponent {
   movie!: Movie;
 
