@@ -11,3 +11,7 @@ As an avid movie enthusiast, I have often found myself struggling to remember th
     <li><b>Watchlist Functionality:</b> Users can easily add movies to their watchlist with a simple click, creating a personalized collection of watched movies for future reference.</li>
     <li><b>Responsive Design:</b> The Movie Watchlist Application is meticulously designed to be responsive across various devices, ensuring a seamless experience on desktops, tablets, and mobile phones.</li>
 </ol>
+
+<img src="public/movie-ui/src/assets/images/Homepage-Before-LoggedIn.png" alt="Girl in a jacket" width="500" height="600">
+<img src="public/movie-ui/src/assets/images/Screenshot 2023-05-26 175210.png" alt="Girl in a jacket" width="500" height="600">
+<img src="public/movie-ui/src/assets/images/Screenshot 2023-08-07 143243.png" alt="Girl in a jacket" width="500" height="600">
