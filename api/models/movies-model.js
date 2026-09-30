@@ -18,6 +18,7 @@ const movieSchema = mongoose.Schema({
     genre: [String],
     year: Number,
     duration: Number,
+    location: String,
     actors: [actorSchema]
 });
 

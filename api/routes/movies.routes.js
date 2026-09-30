@@ -7,22 +7,22 @@ const authenticationController = require("../controllers/authenticationControlle
 
 router.route("/")
     .get(movieController.getAllMovies)
-    .post(movieController.insertOneMovie);
+    .post(authenticationController.authentication, movieController.insertOneMovie);
 
 router.route("/:movieId")
     .get(movieController.getOneMovieById)
     .delete(authenticationController.authentication, movieController.deleteMovieById)
-    .put(movieController.fullUpdateMovie)
-    .patch(movieController.updateMoviePartially);
+    .put(authenticationController.authentication, movieController.fullUpdateMovie)
+    .patch(authenticationController.authentication, movieController.updateMoviePartially);
 
 router.route("/:movieId/actors")
     .get(actorController.getAllActors)
-    .post(actorController.addActor);
+    .post(authenticationController.authentication, actorController.addActor);
 
 router.route("/:movieId/actors/:actorId")
     .get(actorController.getOneActorById)
-    .delete(actorController.deleteActorByMovieId)
-    .put(actorController.fullUpdateActor)
-    .patch(actorController.partialUpdateActor);
+    .delete(authenticationController.authentication, actorController.deleteActorByMovieId)
+    .put(authenticationController.authentication, actorController.fullUpdateActor)
+    .patch(authenticationController.authentication, actorController.partialUpdateActor);
     
 module.exports = router;

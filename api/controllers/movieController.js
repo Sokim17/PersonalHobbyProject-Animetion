@@ -1,6 +1,7 @@
 require("../models/movies-model");
 require("dotenv").config();
 const mongoose = require("mongoose");
+const { createResponse, buildMoviePayload } = require("../utils/response");
 const Movie = mongoose.model(process.env.DB_MOVIE_MODEL);
 
 const _findById = function (id) {
@@ -13,10 +14,7 @@ const _findMovies = function (offset, count) {
     return Movie.find().skip(offset).limit(count);
 }
 
-const response = {
-    status: parseInt(process.env.HTTP_RESPONSE_OK),
-    message: process.env.HTTP_RESPONSE_OK_MESSAGE
-}
+const response = createResponse();
 const _sendResponse = function (res, response) {
     res.status(parseInt(response.status)).json(response.message);
 }
@@ -30,8 +28,8 @@ const _setHttpOkResponse = function (response, object) {
 }
 
 const _setErrorResponse = function (err, response) {
-    if (err.status) {
-        response = err;
+    if (err && err.status) {
+        Object.assign(response, err);
     } else {
         _setInternalErrorResponse(response, err);
     }
@@ -50,15 +48,7 @@ const _checkMovie = function (response, movie) {
 }
 
 const _createNewMovie = function (req) {
-    const newMovie = {
-        title: req.body.title,
-        genre: req.body.genre,
-        year: parseInt(req.body.year),
-        duration: parseInt(req.body.duration),
-        location: req.body.location,
-        actors: req.body.actors
-    };
-    return Movie.create(newMovie);
+    return Movie.create(buildMoviePayload(req));
 }
 
 const _checkPaginationParams = function (req, res) {
@@ -90,46 +80,39 @@ const _checkPaginationParams = function (req, res) {
 
 
 const _movieFullUpdate = function (req, movie) {
-    movie.title = req.body.title;
-    movie.genre = req.body.genre;
-    movie.year = parseInt(req.body.year);
-    movie.location = req.body.location;
-    movie.duration = parseInt(req.body.duration);
+    const payload = buildMoviePayload(req);
 
-    const actors = req.body.actors;
+    movie.title = payload.title;
+    movie.genre = payload.genre;
+    movie.year = payload.year;
+    movie.location = payload.location;
+    movie.duration = payload.duration;
+    movie.actors = payload.actors;
 
-    const actorList = [];
-    for (a of actors) {
-        actorList.push({ name: a.name ?? process.env.NO_NAME });
-    }
-    movie.actors = actorList;
-    return movie.save()
+    return movie.save();
 }
 const _moviePartialUpdate = function (req, movie) {
+    const payload = buildMoviePayload(req);
+
     if (req.body.title) {
-        movie.title = req.body.title;
+        movie.title = payload.title;
     }
     if (req.body.genre) {
-        movie.genre = req.body.genre;
+        movie.genre = payload.genre;
     }
     if (req.body.year) {
-        movie.year = parseInt(req.body.year);
+        movie.year = payload.year;
     }
     if (req.body.duration) {
-        movie.duration = parseInt(req.body.duration);
+        movie.duration = payload.duration;
     }
     if (req.body.location) {
-        movie.location = req.body.location;
+        movie.location = payload.location;
     }
-    if (req.body.actor) {
-        const actors = req.body.actors;
-        const actorList = [];
-        for (a of actors) {
-            actorList.push({ name: a.name ?? process.env.NO_NAME });
-        }
-        movie.actors = actorList;
+    if (req.body.actors) {
+        movie.actors = payload.actors;
     }
-    return movie.save()
+    return movie.save();
 }
 
 const getAllMovies = function (req, res) {
